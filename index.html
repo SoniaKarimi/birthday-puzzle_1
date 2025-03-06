@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Puzzle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { text-align: center; background-color: #111; color: white; }
+        canvas { display: block; margin: auto; }
+        #inputBox { display: none; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Õ· „⁄„« Ê œ—Ì«›  ”Ê—Å—«Ì“ ??</h1>
+    <div id="scene-container"></div>
+    <p id="equation">(x - 5) * 2 + 1995 = ?</p>
+    <input type="text" id="answer" placeholder="ÃÊ«» —« Ê«—œ ò‰Ìœ">
+    <button onclick="checkAnswer()">»——”Ì</button>
+    <audio id="birthdaySong" src="happy_birthday.mp3"></audio>
+    
+    <script>
+        let scene = new THREE.Scene();
+        let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        let renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth * 0.8, window.innerHeight * 0.6);
+        document.getElementById("scene-container").appendChild(renderer.domElement);
+
+        let geometry = new THREE.BoxGeometry();
+        let material = new THREE.MeshBasicMaterial({ color: 0x44aa88, transparent: true, opacity: 0.5, wireframe: true });
+        let cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+        camera.position.z = 2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        function checkAnswer() {
+            let answer = document.getElementById("answer").value;
+            if (answer == "2005") {
+                document.getElementById("birthdaySong").play();
+                alert(" »—Ìò! ?? ¬Â‰ê œ— Õ«· ÅŒ‘ «” !");
+            } else {
+                alert("ÃÊ«» ‰«œ—”  «” . œÊ»«—Â «„ Õ«‰ ò‰!");
+            }
+        }
+    </script>
+</body>
+</html>
