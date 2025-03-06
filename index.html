@@ -4,21 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Puzzle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
+        button {
+    font-family: 'Pacifico', cursive; /* همون فونت فانتزی */
+    font-size: 14px;
+    background-color: #ff5733; /* رنگ نارنجی-قرمز جذاب */
+    color: white;
+    padding: 7px 14px;
+    border: none;
+    border-radius: 25px; /* گرد کردن لبه‌ها */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 3px 3px 10px rgba(255, 87, 51, 0.7);
+}
+
+/* افکت هاور (وقتی موس روش میره) */
+button:hover {
+    background-color: #ff6f47; /* کمی روشن‌تر شدن */
+    box-shadow: 5px 5px 15px rgba(255, 87, 51, 1);
+}
+
+/* افکت کلیک */
+button:active {
+    transform: scale(0.95); /* یه کوچولو فشرده بشه */
+}
+
+        #answer {
+    font-family: 'Pacifico', cursive; /* همون فونت Surprise */
+    font-size: 18px;
+    text-align: center;
+    padding: 8px 12px;
+    width: 150px; /* می‌تونی بزرگ‌ترش کنی */
+    border: none; /* حذف خط دور کادر */
+    border-radius: 25px; /* گوشه‌های گرد */
+    background-color: #00f7ff; /* رنگ پس‌زمینه */
+    color: #222; /* رنگ متن */
+    box-shadow: 3px 3px 10px rgba(0, 255, 255, 0.7); /* سایه طلایی */
+    outline: none; /* حذف خط آبی موقع کلیک */
+    transition: all 0.3s ease-in-out;
+    }
+
+    /* افکت وقتی کاربر داخل کادر کلیک می‌کنه */
+    #answer:focus {
+        background-color: #a94dff; /* یه رنگ روشن‌تر برای تمرکز */
+        box-shadow: 5px 5px 15px rgb(204, 0, 255); /* افزایش شدت سایه */
+    }
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 40px; /* می‌تونی تغییر بدی */
+            color: #00f7ff; /* یه رنگ شاد */
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5); /* یه افکت براق ملایم */
+        }
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('your-font.woff2') format('woff2'),
+                 url('your-font.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
         body { text-align: center; background-color: #111; color: white; }
         canvas { display: block; margin: auto; }
-        #inputBox { display: none; margin-top: 10px; }
+        #loveText { 
+            font-family: 'Great Vibes', cursive;
+            font-size: 30px; /* می‌تونی اندازه رو تغییر بدی */
+            font-weight: 400;
+            color: red;
+            text-align: center;
+            position: absolute;
+            top: 80%; /* می‌تونی تنظیمش کنی که دقیقاً زیر قلب باشه */
+            left: 50%;
+            transform: translate(-50%, -50%) scaleX(1);
+            display: none; }
+        #heart-text {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px; /* می‌تونی بزرگ‌تر/کوچک‌تر کنی */
+            font-family: 'Great Vibes', cursive;
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h1>�� ���� � ������ ��с���� ??</h1>
+    <h1>Surprise 🎂</h1>
     <div id="scene-container"></div>
-    <p id="equation">(x - 5) * 2 + 1995 = ?</p>
-    <input type="text" id="answer" placeholder="���� �� ���� ����">
-    <button onclick="checkAnswer()">�����</button>
-    <audio id="birthdaySong" src="happy_birthday.mp3"></audio>
-    
+    <p id="equation">(20 - 5) * 2 + 1995 = ?</p>
+    <input type="text" id="answer" placeholder="tayping">
+    <button onclick="checkAnswer()">OK</button>
+    <audio id="birthdaySong" src="15.mp3"></audio>
+    <div id="heart-container" style="display: none;"></div>
+    <span id="heart-text">M</span>
+    <h2 id="loveText">I Love You my Heart</h2>
+
     <script>
         let scene = new THREE.Scene();
         let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -44,11 +125,73 @@
             let answer = document.getElementById("answer").value;
             if (answer == "2005") {
                 document.getElementById("birthdaySong").play();
-                alert("����! ?? ��� �� ��� ��� ���!");
+                alert("تبریک! 🎉 آهنگ در حال پخش است!");
+                setTimeout(showHeart, 31000);
             } else {
-                alert("���� ������ ���. ������ ������ ��!");
+                alert("جواب نادرست است. دوباره امتحان کن!");
             }
         }
+
+        function showHeart() {
+            document.getElementById("scene-container").style.display = "none";
+            document.getElementById("equation").style.display = "none";
+            document.getElementById("answer").style.display = "none";
+            document.querySelector("button").style.display = "none";
+            document.getElementById("heart-container").style.display = "block";
+            document.getElementById("heart-text").style.display = "block";
+
+            let heartScene = new THREE.Scene();
+            let heartCamera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            let heartRenderer = new THREE.WebGLRenderer();
+            heartRenderer.setSize(window.innerWidth * 0.8, window.innerHeight * 0.6);
+            document.getElementById("heart-container").appendChild(heartRenderer.domElement);
+
+            let heartShape = new THREE.Shape();
+            heartShape.moveTo(0, 0);
+            heartShape.bezierCurveTo(2.5, 2.5, 5, -2.5, 0, -6);
+            heartShape.bezierCurveTo(-5, -2.5, -2.5, 2.5, 0, 0);
+
+            let points = heartShape.getPoints(50);
+            let geometry = new THREE.BufferGeometry().setFromPoints(points);
+            let material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+            let heart = new THREE.Line(geometry, material);
+
+            heartScene.add(heart);
+            heartCamera.position.z = 10;
+
+            let t = 0;
+            function drawHeartAnimation() {
+                if (t >= points.length) {
+                    animateHeart();
+                    return;
+                }
+                let partialGeometry = new THREE.BufferGeometry().setFromPoints(points.slice(0, t));
+                let partialHeart = new THREE.Line(partialGeometry, material);
+                heartScene.clear();
+                heartScene.add(partialHeart);
+                heartRenderer.render(heartScene, heartCamera);
+                t++;
+                requestAnimationFrame(drawHeartAnimation);
+            }
+            drawHeartAnimation();
+
+            function animateHeart() {
+                heartScene.add(heart);
+                function rotateHeart() {
+                    requestAnimationFrame(rotateHeart);
+                    heart.rotation.y += 0.01;
+                    heartRenderer.render(heartScene, heartCamera);
+                }
+                rotateHeart();
+                document.getElementById("loveText").style.display = "block";
+            }
+        }
+        document.getElementById("answer").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") { 
+        event.preventDefault(); // جلوگیری از رفتار پیش‌فرض
+        checkAnswer(); // اجرای تابع بررسی جواب
+    }
+});
     </script>
 </body>
 </html>
